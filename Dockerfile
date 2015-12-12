@@ -21,14 +21,7 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y --force-yes php7.0 php7.
 
 #Install php-redis extension for php7
 RUN git clone https://github.com/phpredis/phpredis.git
-RUN cd phpredis
-RUN git checkout php7
-RUN phpize
-RUN ./configure
-RUN make && make install
-RUN cd ..
-RUN rm -rf phpredis
-
+RUN cd phpredis && git checkout php7 && phpize && ./configure && make && make install && cd .. && rm -rf phpredis
 RUN echo "extension=redis.so" > /etc/php/mods-available/redis.ini
 RUN ln -sf /etc/php/mods-available/redis.ini /etc/php/7.0/fpm/conf.d/20-redis.ini
 RUN ln -sf /etc/php/mods-available/redis.ini /etc/php/7.0/cli/conf.d/20-redis.ini
@@ -36,11 +29,7 @@ RUN ln -sf /etc/php/mods-available/redis.ini /etc/php/7.0/cli/conf.d/20-redis.in
 # Install php-memcached extension for php7
 RUN apt-get install gcc make autoconf libc-dev pkg-config zlib1g-dev libmemcached-dev
 RUN git clone https://github.com/php-memcached-dev/php-memcached
-RUN cd php-memcached
-RUN git checkout php7
-RUN phpize
-RUN ./configure
-RUN make && make install
+RUN cd php-memcached && git checkout php7 && phpize && ./configure && make && make install
 RUN echo "extension=memcached.so" > /etc/php/mods-available/memcached.ini
 RUN ln -sf /etc/php/mods-available/memcached.ini /etc/php/7.0/fpm/conf.d/20-memcached.ini
 RUN ln -sf /etc/php/mods-available/memcached.ini /etc/php/7.0/cli/conf.d/20-memcached.ini
